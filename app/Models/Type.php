@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Type extends Model
 {
+    protected $guarded=[];
+    protected $table='types';
     use HasFactory;
+    
+    public function jobs(){
+        return $this->hasMany(Job::class);
+    }
 }
