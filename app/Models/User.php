@@ -45,6 +45,6 @@ class User extends Authenticatable
         return $this->hasMany(Application::class);
     }
     public function industry(){
-        return $this->hasOne(Industry::class);
+        return $this->belongsTo(Industry::class);
     }
 }
