@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Application;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,5 +25,19 @@ class ApplicationFactory extends Factory
             'resume'=>fake()->name().'.pdf',
             'cover_letter'=>fake()->paragraph()
         ];
+    }
+    public function configure()
+    {
+        return $this->afterMaking(function ($application) {
+            // Check if the combination already exists and regenerate if needed
+            while (Application::where('user_id', $application->user_id)->where('job_id', $application->job_id)->exists()) {
+                // Regenerate the user_id and job_id if the combination exists
+                $user = User::inRandomOrder()->first();
+                $job = Job::inRandomOrder()->first();
+
+                $application->user_id = $user->id;
+                $application->job_id = $job->id;
+            }
+        });
     }
 }

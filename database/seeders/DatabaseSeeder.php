@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
         IndustrySeeder::class,
         TypeSeeder::class,
         CompanySeeder::class,
-        UserSeeder::class,
         JobSeeder::class,
+        UserSeeder::class,
         ApplicationSeeder::class,
        ]);
     }

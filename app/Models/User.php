@@ -47,4 +47,7 @@ class User extends Authenticatable
     public function industry(){
         return $this->belongsTo(Industry::class);
     }
+    public function job(){
+        return $this->belongsTo(Job::class);
+    }
 }

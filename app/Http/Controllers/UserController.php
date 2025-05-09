@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -20,9 +25,18 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+
+        $validatedData = $request->validated();
+        $user = User::create([
+            'name'=>$validatedData['name'],
+            'email'=>$validatedData['email'],
+            'password'=> Hash::make($validatedData['password']),
+            'industry_id'=>$validatedData['industry_id'],
+            
+        ]);
+        return new UserResource($user);
     }
 
     /**
@@ -30,15 +44,18 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return new UserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->validated());
+        return new UserResource($user);
     }
 
     /**
@@ -46,6 +63,24 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json("Deleted");
+    }
+    public function login(Request $request){
+        $validateForm = $request->validate([
+            'email'=>'required|string|email',
+            'password'=>'required|string'
+        ]);
+        if(!Auth::attempt($request->only('email','password')))
+            return response()->json("Wrong email or password");
+
+        $user = User::where('email',$request->email)->firstOrFail();
+        $token = $user->createToken('login_token')->plainTextToken;
+        return response()->json([
+            "message"=>"Login success",
+            'user'=>new UserResource($user),
+            'token'=>$token
+         ]);   
     }
 }
