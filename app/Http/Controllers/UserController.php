@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\ApplicationResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
@@ -82,5 +83,34 @@ class UserController extends Controller
             'user'=>new UserResource($user),
             'token'=>$token
          ]);   
+    }
+    public function logout(Request $request){
+        $user = $request->user();//get the user of the token entered 
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message'=>"Logout success",
+            'user'=>new UserResource($user)
+        ]);
+    }
+    public function getApplications(){
+        $user = Auth::user();
+        $applications = $user->applications;   
+        return ApplicationResource::collection($applications);
+    }
+    public function getIndustry(){
+        $user = Auth::user();
+        $industry = $user->industry;
+        return response()->json($industry);
+   
+    }
+    public function getJob(){
+        $user = Auth::user();
+        $job = $user->job;
+        return response()->json($job);
+    }
+    public function getRole(){
+        $user = Auth::user();
+        $role = $user->role;
+        return response()->json($role);
     }
 }

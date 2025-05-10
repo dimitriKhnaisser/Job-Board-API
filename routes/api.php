@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,5 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::apiResource('users',UserController::class);
+Route::post('user/login',[UserController::class,'login']);
 
-Route::post('users/login',[UserController::class,'login']);
+Route::middleware('auth:sanctum')->group(function(){
+
+Route::post('user/logout',[UserController::class,'logout']);
+Route::get('user/applications',[UserController::class,'getApplications']);
+Route::get('user/industry',[UserController::class,'getIndustry']);
+Route::get('user/job',[UserController::class,'getJob']);
+Route::get('user/role',[UserController::class,'getRole']);
+
+Route::post('application/{jobId}/job',[ApplicationController::class,'store']);
+
+
+} );

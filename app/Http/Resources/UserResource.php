@@ -18,8 +18,8 @@ class UserResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'email'=>$this->email,
-            'industry'=>$this->industry->name,
-            'application'=>ApplicationResource::collection($this->applications)
+            // 'industry'=>$this->industry->name,
+            // 'application'=>ApplicationResource::collection($this->applications)
         ];
     }
 }
