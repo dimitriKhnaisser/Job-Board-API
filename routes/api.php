@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::apiResource('users',UserController::class);
 Route::post('user/login',[UserController::class,'login']);
 
@@ -31,7 +33,12 @@ Route::get('user/industry',[UserController::class,'getIndustry']);
 Route::get('user/job',[UserController::class,'getJob']);
 Route::get('user/role',[UserController::class,'getRole']);
 
-Route::post('application/{jobId}/job',[ApplicationController::class,'store']);
+Route::post('job/{jobId}/application',[ApplicationController::class,'store']);
+Route::get('job/{jobId}/allApplications',[ApplicationController::class,'showJobApplications']);
 
+Route::get('company/{company_id}/allJobs',[JobController::class,'companyJobs']);
+Route::post('company/{company_id}/addJob',[JobController::class,'store']);
+Route::put('company/{company_id}/updateJob/{jobId}',[JobController::class,'update']);
 
 } );
+
