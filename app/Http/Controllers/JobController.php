@@ -35,8 +35,9 @@ class JobController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreJobRequest $request,$company_id)     
+    public function store(StoreJobRequest $request)     
     {
+        $company_id = $request->user()->id; 
         $validatedData = $request->validated();
         $validatedData['company_id'] = $company_id;
         // Create a new job using the validated data

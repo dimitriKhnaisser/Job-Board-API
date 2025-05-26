@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ApplicationResource;
 use App\Http\Resources\UserResource;
+use App\Models\Job;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -103,6 +104,7 @@ class UserController extends Controller
         return response()->json($industry);
    
     }
+   
     public function getJob(){
         $user = Auth::user();
         $job = $user->job;
