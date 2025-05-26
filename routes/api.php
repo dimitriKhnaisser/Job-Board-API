@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\UserController;
 use App\Models\Company;
 use App\Models\User;
@@ -32,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::post('user/logout',[UserController::class,'logout']);
 Route::get('user/applications',[UserController::class,'getApplications']);
 Route::get('user/industry',[UserController::class,'getIndustry']);
-Route::get('user/job',[UserController::class,'getJob']);
+Route::get('user/positions',[UserController::class,'getPositions']);
 Route::get('user/role',[UserController::class,'getRole']);
 
 Route::post('job/{jobId}/application',[ApplicationController::class,'store']);
@@ -45,6 +46,9 @@ Route::put('company/{company_id}/updateJob/{jobId}',[JobController::class,'updat
 Route::get('allCompanies',[CompanyController::class,'index']);
 Route::post('addCompany',[CompanyController::class,'store']);
 Route::post('company/logout',[CompanyController::class,'logout']);
+
+Route::post('user/addPosition',[PositionController::class,'addPosition']);
+Route::put('user/updatePosition/{position_id}',[PositionController::class,'updatePosition']);
 
 } );
 

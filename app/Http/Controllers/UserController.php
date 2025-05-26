@@ -105,14 +105,15 @@ class UserController extends Controller
    
     }
    
-    public function getJob(){
-        $user = Auth::user();
-        $job = $user->job;
-        return response()->json($job);
-    }
     public function getRole(){
         $user = Auth::user();
         $role = $user->role;
         return response()->json($role);
+    }
+
+    public function getPositions(){
+        $user = Auth::user();
+        $position = $user->positions;
+        return response()->json($position);
     }
 }

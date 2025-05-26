@@ -19,6 +19,8 @@ class CompanyFactory extends Factory
     {
         return [
             'industry_id'=>Industry::inRandomOrder()->first()->id,
+            'email'=>fake()->unique()->safeEmail(),
+            'password'=>fake()->password(),
             'name'=>fake()->company(),
             'address'=>fake()->address()
         ];

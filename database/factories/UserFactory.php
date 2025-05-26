@@ -29,7 +29,6 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'industry_id'=>Industry::inRandomOrder()->first()->id,
-            'job_id' => rand(0, 1) ? Job::inRandomOrder()->first()->id : null,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
