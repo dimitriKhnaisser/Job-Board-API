@@ -25,7 +25,7 @@ class StoreUserRequest extends FormRequest
             'name'=>'required|string|max:255',
             'email'=>'required|string|unique:users,email|max:255|email',
             'password'=>'required|string|min:8|confirmed',
-            'industry_id'=>'required|exists:industries,id'
+            'industry_id'=>'nullable|exists:industries,id'
         ];
     }
 }

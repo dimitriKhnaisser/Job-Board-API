@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,9 @@ Route::get('user/industry',[UserController::class,'getIndustry']);
 Route::get('user/positions',[UserController::class,'getPositions']);
 Route::get('user/role',[UserController::class,'getRole']);
 
+Route::get('user/setIndustry',[IndustryController::class,'addUserIndustry']);
+
+
 Route::post('job/{jobId}/application',[ApplicationController::class,'store']);
 Route::get('job/{jobId}/allApplications',[ApplicationController::class,'showJobApplications']);
 
@@ -50,5 +54,6 @@ Route::post('company/logout',[CompanyController::class,'logout']);
 Route::post('user/addPosition',[PositionController::class,'addPosition']);
 Route::put('user/updatePosition/{position_id}',[PositionController::class,'updatePosition']);
 
+Route::get('industry/{industry_id}/companies',[IndustryController::class,'companiesIndustry']);
 } );
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePositionRequest;
+use App\Http\Requests\UpdatePositionRequest;
 use App\Models\Position;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Contracts\Support\ValidatedData;
@@ -22,7 +23,7 @@ class PositionController extends Controller
         ], 201);
 
     }
-     public function updatePosition( StorePositionRequest $request,$position_id){
+     public function updatePosition( UpdatePositionRequest $request,$position_id){
         $user = Auth::user();
         $position = Position::findOrFail($position_id);
         if ($position->user_id !== $user->id) {
@@ -35,5 +36,16 @@ class PositionController extends Controller
             'position' => $position
         ], 201);
 
+    }
+    public function deletePosition($position_id){
+        $user = Auth::user();
+        $position = Position::findOrFail($position_id);
+        if ($position->user_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        $position->delete();
+        return response()->json([
+            'message' => 'Position deleted successfully'
+        ], 200);
     }
 }
