@@ -34,7 +34,7 @@ class PositionController extends Controller
         return response()->json([
             'message' => 'Position updated successfully',
             'position' => $position
-        ], 201);
+        ], 200);
 
     }
     public function deletePosition($position_id){

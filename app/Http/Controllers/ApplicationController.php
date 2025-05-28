@@ -28,7 +28,19 @@ class ApplicationController extends Controller
      */
     public function store(StoreApplicationRequest $request,$job_id)
     {
-       try{ 
+       try{
+           
+            $job = Job::where('id', $job_id)->first();
+            if (!$job) {
+                return response()->json([
+                    'message' => 'Job not found'
+                ], 404);
+            }
+            if (!$job->open) {
+                return response()->json([
+                    'message' => 'Job is not open for applications'
+                ], 400);
+            }
             $user_id = Auth::user()->id;
             $validatedData = $request->validated();
             $validatedData['user_id'] = $user_id;
@@ -37,7 +49,7 @@ class ApplicationController extends Controller
             if($applicationExists)
                  return response()->json([
                     'message'=>'User have already applied'
-                 ]);
+                 ],409);
             if($request->hasFile('resume')){
                 $path = $request->file('resume')->store('resume','public');
                 $validatedData['resume'] = $path;
@@ -56,18 +68,42 @@ class ApplicationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showJobApplications($job_id)
-    {
-        $allApplications = Job::find($job_id)->applications;  
-        return response()->json($allApplications);     
+   public function showJobApplications($job_id)
+{
+    $company = Auth::user();
+
+    // Check if job exists and belongs to the authenticated company
+    $job = Job::where('id', $job_id)
+              ->where('company_id', $company->id)
+              ->first();
+
+    if (!$job) {
+        return response()->json([
+            'message' => 'Job not found or does not belong to your company'
+        ], 404);
     }
+
+    $allApplications = $job->applications;
+
+    if ($allApplications->isEmpty()) {
+        return response()->json([
+            'message' => 'No applications found for this job'
+        ], 404);
+    }
+
+    return response()->json($allApplications);
+}
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        //can not update application
+        return response()->json([
+            'message' => 'Application cannot be updated'
+        ], 403);
     }
 
     /**
@@ -75,6 +111,9 @@ class ApplicationController extends Controller
      */
     public function destroy(string $id)
     {
-        
+        //can not delete application
+        return response()->json([
+            'message' => 'Application cannot be deleted'
+        ], 403);
     }
 }

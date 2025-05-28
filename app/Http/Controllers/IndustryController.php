@@ -21,6 +21,19 @@ class IndustryController extends Controller
             'industries' => $industries
         ], 200);
     }
+    public function indexSearch(Request $request)
+    {
+        $industryName = Industry::where('name', 'like', '%' . $request->input('name') . '%')->get();
+        if ($industryName->isEmpty()) {
+            return response()->json([
+                'message' => 'No industries found with that name'
+            ], 404);
+        }
+        return response()->json([
+            'message' => 'Industries retrieved successfully',
+            'industries' => $industryName
+        ], 200);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -99,10 +112,14 @@ class IndustryController extends Controller
         $users = Industry::findOrFail($industry_id)->users;
         return response()->json([
             'message' => 'Users in this industry retrieved successfully',
-            'companies' => $users
+            'users' => $users
         ], 200);
     }
     public function addUserIndustry(Request $request){
+        //this function is used to add industry to user
+        //at first the user will type the industry name
+        //if the industry exists it will be added to user
+        //if the industry does not exist it will be created and then added to user
         $user = $request->user();
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -116,5 +133,15 @@ class IndustryController extends Controller
             'message' => 'User industry updated successfully',
             'user' => $user
         ], 200);
+    }
+    public function removeUserIndustry(){
+        $user = request()->user();
+        $user->industry_id = null;
+        $user->update('industry_id', null);
+        return response()->json([
+            'message' => 'User industry removed successfully',
+            'user' => $user
+        ], 200);
+
     }
 }

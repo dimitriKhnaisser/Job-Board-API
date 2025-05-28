@@ -67,7 +67,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json("Deleted");
+        return response()->json("User deleted successfully",200);
     }
     public function login(Request $request){
         $validateForm = $request->validate([
@@ -75,7 +75,7 @@ class UserController extends Controller
             'password'=>'required|string'
         ]);
         if(!Auth::attempt($request->only('email','password')))
-            return response()->json("Wrong email or password");
+            return response()->json("Wrong email or password",401);
 
         $user = User::where('email',$request->email)->firstOrFail();
         $token = $user->createToken('login_token')->plainTextToken;
@@ -105,11 +105,11 @@ class UserController extends Controller
    
     }
    
-    public function getRole(){
-        $user = Auth::user();
-        $role = $user->role;
-        return response()->json($role);
-    }
+    // public function getRole(){
+    //     $user = Auth::user();
+    //     $role = $user->role;
+    //     return response()->json($role);
+    // }
 
     public function getPositions(){
         $user = Auth::user();

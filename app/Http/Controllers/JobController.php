@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Job;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Type\Integer;
 
 class JobController extends Controller
@@ -25,9 +26,7 @@ class JobController extends Controller
 
     public function companyJobs($company_id)
     {
-        // Fetch all jobs for a specific company
         $jobs = Job::where('company_id', $company_id)->get();
-        // Return the jobs as a JSON response
         return response()->json($jobs);
     }
 
@@ -91,8 +90,46 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+   
+    public function toggleOpen($job_id){
+        try{
+            $company_id = Auth::user()->id;
+            $job = Job::findOrFail($job_id)->where('company_id', $company_id)->firstOrFail();
+            $openStatus = $job->open;
+            if($openStatus){
+                $job->update(['open' => false]);
+                return response()->json([
+                    'message' => 'Job closed successfully',
+                    'job' => $job
+                ]);
+            }
+            $job->update(['open' => true]);
+            return response()->json([
+                'message' => 'Job opened successfully',
+                'job' => $job
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Job not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+    }
+    public function destroy(string $job_id)
     {
-        //
+        $company_id = auth()->user()->id;
+        $job = Job::where('id', $job_id)->where('company_id', $company_id)->first();
+
+        if (!$job) {
+            return response()->json(['message' => 'Job not found or unauthorized'], 404);
+        }
+
+        $job->delete();
+
+        return response()->json([
+            'message' => 'Job deleted successfully'
+        ], 200);
     }
 }
+
+
