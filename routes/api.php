@@ -29,13 +29,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('users',UserController::class);
 Route::post('user/login',[UserController::class,'login']);
 Route::post('company/login',[CompanyController::class,'login']);
-Route::post('addCompany',[CompanyController::class,'store']);
+Route::post('addCompany',[CompanyController::class,'register']);
 
 Route::middleware('auth:sanctum')->group(function(){
 Route::get('user/setIndustry',[IndustryController::class,'addUserIndustry']);
-Route::post('job/{jobId}/application',[ApplicationController::class,'store']);
-Route::get('job/{jobId}/allApplications',[ApplicationController::class,'showJobApplications']);
 Route::get('allCompanies',[CompanyController::class,'index']);
+Route::get('showCompany',[CompanyController::class,'show']);
+Route::get('showCompanyByName',[CompanyController::class,'showCompanyByName']);
+
 Route::get('industry/{industry_id}/companies',[IndustryController::class,'companiesIndustry']);
 } );
 
@@ -47,6 +48,8 @@ Route::get('user/positions',[UserController::class,'getPositions']);
 Route::get('user/role',[UserController::class,'getRole']);
 Route::post('user/addPosition',[PositionController::class,'addPosition']);
 Route::put('user/updatePosition/{position_id}',[PositionController::class,'updatePosition']);
+Route::post('job/{jobId}/application',[ApplicationController::class,'store']);
+
 });
 
 Route::middleware(['auth:sanctum', 'is_company'])->group(function () {
@@ -54,6 +57,10 @@ Route::get('company/{company_id}/allJobs',[JobController::class,'companyJobs']);
 Route::post('company/{company_id}/addJob',[JobController::class,'store']);
 Route::put('company/{company_id}/updateJob/{jobId}',[JobController::class,'update']); 
 Route::post('company/logout',[CompanyController::class,'logout']);
+Route::get('job/{jobId}/allApplications',[ApplicationController::class,'showJobApplications']);
+Route::get('updateCompany',[CompanyController::class,'update']);
+Route::get('deleteCompany',[CompanyController::class,'delete']);
+
 
 });
 
