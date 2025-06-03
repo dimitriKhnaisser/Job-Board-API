@@ -36,11 +36,26 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+
+    'company' => [
+        'driver' => 'session',
+        'provider' => 'companies',
+    ],
+
+    'user_api' => [
+        'driver' => 'sanctum',
+        'provider' => 'users',
+    ],
+
+    'company_api' => [
+        'driver' => 'sanctum',
+        'provider' => 'companies',
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------
@@ -65,10 +80,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'companies' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Company::class,
+        ],
     ],
 
     /*
