@@ -56,6 +56,10 @@ A RESTful API for managing job listings, companies, and user applications, built
 #### 🏭 Industry Features
 - `GET /industry/{industry_id}/companies` – Companies by industry
 
+Note:
+This README includes a selection of the core endpoints. The project contains additional routes and features not listed here. Explore the controllers and route files for the full implementation.
+
+
 #### 📄 RESTful Resources (CRUD)
 - `users` → UserController
 - `jobs` → JobController
