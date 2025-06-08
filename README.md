@@ -80,4 +80,4 @@ This project is part of my journey into backend development using Laravel. It de
 
 ## License
 
-This project is open-source and available under the [MIT license](LICENSE).
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
