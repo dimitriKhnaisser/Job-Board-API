@@ -22,7 +22,7 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function register(Request $request)
     {
         $validatedData = $request->validate([
             'name'=>'required|string|max:255',
@@ -66,22 +66,57 @@ class CompanyController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $company = Company::find($id);
+        if(!$company){
+            return response()->json(['message' => 'Company not found'], 404);
+        }
+        return response()->json($company);
     }
 
+    public function showCompanyByName(string $name){
+        $company = Company::where('name','like',"%$name%")->first();
+        if(!$company){
+            return response()->json(['message' => 'Company not found'], 404);
+        }
+        return response()->json($company);
+    }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name'=>'sometimes|string|max:255',
+            'address'=>'sometimes|string|max:255',
+            'email'=>'sometimes|email|max:255|unique:companies,email',
+            'password'=>'sometimes|min:8|max:255|confirmed',
+            'industry_id'=>'sometimes|exists:industries,id',
+        ]);
+
+        $company =$request->user();
+        if(!$company){
+            return response()->json(['message' => 'Company not found'], 404);
+        }
+
+        if(isset($validatedData['password'])){
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        $company->update($validatedData);
+
+        return response()->json($company);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $company = $request->user();
+        if(!$company){
+            return response()->json(['message' => 'Company not found'], 404);
+        }
+        $company->delete();
+        return response()->json(['message' => 'Company deleted successfully'], 200);
     }
 }
