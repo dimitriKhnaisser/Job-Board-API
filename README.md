@@ -12,7 +12,7 @@ A RESTful API for managing job listings, companies, and user applications, built
 - **Users**: Register, login, set industry, add preferred positions
 - **Companies**: Register, login, manage company profile
 - **Industries & Types**: Categorize jobs and companies by industry and contract type
-- **Positions**: Manage job position titles
+- **Positions**: Manage users positions 
 - **Company Discovery**:
   - Search by industry
   - Lookup by name
@@ -43,9 +43,8 @@ A RESTful API for managing job listings, companies, and user applications, built
 #### 👤 User Management
 - `GET /user/applications` – View user's job applications
 - `GET /user/industry` – Get user’s industry
-- `GET /user/positions` – View preferred positions
-- `GET /user/role` – Get user role
-- `POST /user/addPosition` – Add a preferred position
+- `GET /user/positions` – View user positions
+- `POST /user/addPosition` – Add work position
 - `GET /user/setIndustry` – Set user industry
 
 #### 🏢 Company Routes
