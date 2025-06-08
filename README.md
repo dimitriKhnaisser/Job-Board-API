@@ -67,6 +67,7 @@ This README includes a selection of the core endpoints. The project contains add
 - `industries` → IndustryController
 - `types` → TypeController
 - `positions` → PositionController
+- `companies` → CompanyController
 
 ---
 
